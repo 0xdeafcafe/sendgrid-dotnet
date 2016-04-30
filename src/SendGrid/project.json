@@ -1,0 +1,66 @@
+﻿{
+	"version": "1.0.0-beta-*",
+	"title": "SendGrid Client",
+	"description": "A dotnet wrapper for the https://sendgrid.com/ api",
+	"summary": "A dotnet wrapper for the https://sendgrid.com/ api, with support for dotnet core.",
+	"authors": [
+		"Alex Forbes-Reed"
+	],
+	"tags": [
+		"sendgrid",
+		"mail",
+		"email",
+		"swag"
+	],
+	"language": "en-gb",
+	"copyright": "Alex Forbes-Reed 2016",
+	"projectUrl": "https://github.com/0xdeafcafe/sendgrid-dotnet",
+	"licenseUrl": "https://github.com/0xdeafcafe/sendgrid-dotnet/blob/master/LICENSE",
+	"iconUrl": "https://assets2.sendgrid.com/mkt/assets/logos_brands/2016/2015_SG_2nd_Small_RGB-99fe0e48b8ef11f8524bfd6b5ef67ee6.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/0xdeafcafe/sendgrid-dotnet"
+	},
+	"tooling": {
+		"defaultNamespace": "SendGrid"
+	},
+	"dependencies": {
+		"Newtonsoft.Json": "7.0.1"
+	},
+	"configurations": {
+		"Debug": {
+			"compilationOptions": {
+				"define": [ "DEBUG", "TRACE" ]
+			}
+		},
+		"Release": {
+			"compilationOptions": {
+				"define": [ "RELEASE", "TRACE" ],
+				"optimize": true
+			}
+		}
+	},
+	"compilationOptions": {
+		"languageVersion": "csharp6",
+		"warningsAsErrors": true
+	},
+	"frameworks": {
+		"net451": {
+			"dependencies": {
+				"System.Net.Http": "4.0.1-beta-23516"
+			}
+		},
+		"dotnet5.4": {
+			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"System.Collections": "4.0.11-beta-23516",
+				"System.Linq": "4.0.1-beta-23516",
+				"System.Runtime": "4.0.21-beta-23516",
+				"System.Threading": "4.0.11-beta-23516",
+				"System.Net.Http": "4.0.1-beta-23516",
+				"System.Text.Encoding": "4.0.11-beta-23516",
+				"System.Text.Encoding.Extensions": "4.0.11-beta-23516"
+			}
+		}
+	}
+}
