@@ -7,10 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8F73D328-F3F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C83594A6-0AF0-429C-B967-0FDD33D342AF}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SendGrid", "src\SendGridClient\SendGridClient.xproj", "{98738820-B9D6-4BD8-8231-EB03AF155944}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SendGridClient", "src\SendGridClient\SendGridClient.xproj", "{98738820-B9D6-4BD8-8231-EB03AF155944}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
