@@ -1,0 +1,26 @@
+version: 1.0.0-beta-{build}
+os: Visual Studio 2015
+shallow_clone: true
+install:
+- ps: $Env:DNX_BUILD_VERSION = $Env:APPVEYOR_REPO_COMMIT.Substring(0,7)
+- cmd: echo %DNX_BUILD_VERSION%
+- cmd: echo %WEBPROJ_ENABLEBETA8RENAMES%
+- cmd: set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+- cmd: dnvm update-self
+- cmd: dnvm install 1.0.0-rc1-update2
+- cmd: dnu restore --quiet --parallel
+build_script:
+- cmd: cd %APPVEYOR_BUILD_FOLDER%\src\SendGridClient
+- cmd: dnu build
+- cmd: dnu pack --configuration RELEASE
+artifacts:
+  - path: '**\*.nupkg'
+cache:
+  - C:\Users\appveyor\.dnx
+deploy:
+- provider: NuGet
+  skip_symbols: false
+  api_key:
+    secure: AbZSxh49fLFQDHwp+LlQjT2KPtMFJlcDKWq3KKHrsgNDxdRtOkJdU0ASJFTS/Vsk
+  on:
+    branch: master
