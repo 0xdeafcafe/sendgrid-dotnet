@@ -8,7 +8,7 @@ namespace SendGrid
 	public class SendGridClient
 		: ApiClient, ISendGridClient
 	{
-		protected SendGridClient(ApiKeyConnection connection)
+		public SendGridClient(ApiKeyConnection connection)
 			: base(connection)
 		{
 			MailClient = new MailClient(connection);
