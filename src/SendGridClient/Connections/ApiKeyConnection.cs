@@ -6,7 +6,7 @@
 		/// Creates a new Api Key Connection
 		/// </summary>
 		/// <param name="apiKey">A SendGrid Api Key</param>
-		public ApiKeyConnection(string apiKey, string secretKey)
+		public ApiKeyConnection(string apiKey)
 		{
 			ApiKey = apiKey;
 		}
