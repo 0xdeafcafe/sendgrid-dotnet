@@ -12,7 +12,7 @@ namespace SendGrid.Client.Converters
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			return reader.Value.ToString() == "success";
+			return (reader.Value.ToString().ToLowerInvariant() == "success");
 		}
 
 		public override bool CanConvert(Type objectType)
