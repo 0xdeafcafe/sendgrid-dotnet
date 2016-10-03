@@ -10,7 +10,7 @@ var client = new SendGridClient(connection);
 await client.MailClient.SendAsync("alex@github.com", "Alex Forbes-Reed", "Test Subject", "<h1>body</h1>", "body", "info@github.com", "Github Account");
 ```
 
-#### Dependency Injection Example - thanks [@NotMyself](https://github.com/@NotMyself)
+#### Dependency Injection Example - thanks [@NotMyself](https://github.com/NotMyself)
 ``` csharp
 public class ContactUsOptions
 {
