@@ -20,12 +20,12 @@ namespace SendGrids
 			var body = new Dictionary<string, string>
 			{
 				{ "to", to },
-				{ "to_name", toName },
+				{ "toname", toName },
 				{ "subject", subject },
 				{ "html", htmlBody },
 				{ "text", textBody },
 				{ "from", from },
-				{ "from_name", fromName }
+				{ "fromname", fromName }
 			};
 
 			await HttpConnection.PostAsync<GenericResponse>("mail.send", body);
