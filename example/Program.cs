@@ -21,24 +21,24 @@ namespace ConsoleApplication
 						{
 							new EmailDetail
 							{
-								Email = "sendgrid@alx.red",
-								Name = "Alex Forbes-Reed"
+								Email = "customer@yahoooooo.com",
+								Name = "Customer Name"
 							}
 						}
 					}
 				},
 				From = new EmailDetail
 				{
-					Email = "test@helm.global",
-					Name = "Helm Test"
+					Email = "no-reply@company.domain",
+					Name = "Company Letter"
 				},
-				Subject = "Test Email",
+				Subject = "sup",
 				Content = new List<Content>
 				{
 					new Content
 					{
 						Type = "text/html",
-						Value = "<h1>Test Email :)</h1>"
+						Value = "<h1>yo yo! :)</h1>"
 					}
 				}
 			}).Wait();
