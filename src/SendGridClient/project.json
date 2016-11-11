@@ -1,5 +1,5 @@
 ﻿{
-	"version": "1.2.0",
+	"version": "2.0.0-preview1",
 	"title": "SendGrid Client",
 	"description": "A dotnet wrapper for the https://sendgrid.com/ api",
 	"language": "en-gb",

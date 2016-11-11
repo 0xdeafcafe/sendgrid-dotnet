@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using SendGrid.Models.Error;
 
 namespace SendGrid.Models
 {
 	public class ErrorResponse
 	{
-		[JsonProperty("message")]
-		public string Message { get; set; }
-
 		[JsonProperty("errors")]
-		public string[] Errors { get; set; }
+		public IEnumerable<ErrorDetail> Errors { get; set; }
 	}
 }

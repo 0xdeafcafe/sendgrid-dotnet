@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SendGrid.Abstracts;
 using SendGrid.Connections;
 using SendGrid.Interfaces;
-using SendGrid.Models;
+using SendGrid.Models.Mail;
 
 namespace SendGrids
 {
@@ -15,20 +13,9 @@ namespace SendGrids
 			: base(connection)
 		{ }
 
-		public async Task SendAsync(string to, string toName, string subject, string htmlBody, string textBody, string from, string fromName)
+		public async Task SendAsync(Email email)
 		{
-			var body = new Dictionary<string, string>
-			{
-				{ "to", to },
-				{ "toname", toName },
-				{ "subject", subject },
-				{ "html", htmlBody },
-				{ "text", textBody },
-				{ "from", from },
-				{ "fromname", fromName }
-			};
-
-			await HttpConnection.PostAsync<GenericResponse>("mail.send", body);
+			await HttpConnection.PostAsync<object, Email>("mail/send", email);
 		}
 	}
 }

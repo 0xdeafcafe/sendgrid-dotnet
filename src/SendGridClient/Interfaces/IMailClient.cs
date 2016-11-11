@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using SendGrid.Models.Mail;
 
 namespace SendGrid.Interfaces
 {
 	public interface IMailClient
 	{
-		Task SendAsync(string to, string toName, string subject, string htmlBody, string textBody, string from, string fromName);
+		Task SendAsync(Email email);
 	}
 }

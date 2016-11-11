@@ -9,6 +9,7 @@ using SendGrid.Connections;
 using SendGrid.Exceptions;
 using SendGrid.Extentions;
 using SendGrid.Models;
+using static Newtonsoft.Json.JsonConvert;
 
 namespace SendGrid.Http
 {
@@ -35,32 +36,43 @@ namespace SendGrid.Http
 			_apiKey = connection.ApiKey;
 		}
 
-		public async Task<T> GetAsync<T>(string route, Dictionary<string, string> parameters = null)
+		public async Task<TResponse> GetAsync<TResponse>(string route, Dictionary<string, string> parameters = null)
+			where TResponse : class, new()
 		{
-			return await MakeRequestAsync<T>(HttpMethod.GET, route, parameters: parameters);
+			return await MakeRequestAsync<TResponse, object>(HttpMethod.GET, route, parameters: parameters);
 		}
 
-		public async Task<T> PostAsync<T>(string route, Dictionary<string, string> body, Dictionary<string, string> parameters = null)
+		public async Task<TResponse> PostAsync<TResponse, TRequest>(string route, TRequest body, Dictionary<string, string> parameters = null)
+			where TRequest : class, new()
+			where TResponse : class, new()
 		{
-			return await MakeRequestAsync<T>(HttpMethod.POST, route, body, parameters);
+			return await MakeRequestAsync<TResponse, TRequest>(HttpMethod.POST, route, body, parameters);
 		}
 
-		public async Task<T> PutAsync<T>(string route, Dictionary<string, string> body, Dictionary<string, string> parameters = null)
+		public async Task<TResponse> PutAsync<TResponse, TRequest>(string route, TRequest body, Dictionary<string, string> parameters = null)
+			where TRequest : class, new()
+			where TResponse : class, new()
 		{
-			return await MakeRequestAsync<T>(HttpMethod.PUT, route, body, parameters);
+			return await MakeRequestAsync<TResponse, TRequest>(HttpMethod.PUT, route, body, parameters);
 		}
 
-		public async Task<T> PatchAsync<T>(string route, Dictionary<string, string> body, Dictionary<string, string> parameters = null)
+		public async Task<TResponse> PatchAsync<TResponse, TRequest>(string route, TRequest body, Dictionary<string, string> parameters = null)
+			where TRequest : class, new()
+			where TResponse : class, new()
 		{
-			return await MakeRequestAsync<T>(HttpMethod.PATCH, route, body, parameters);
+			return await MakeRequestAsync<TResponse, TRequest>(HttpMethod.PATCH, route, body, parameters);
 		}
 
-		public async Task<T> DeleteAsync<T>(string route, Dictionary<string, string> parameters = null)
+		public async Task<TResponse> DeleteAsync<TResponse, TRequest>(string route, TRequest body,  Dictionary<string, string> parameters = null)
+			where TRequest : class, new()
+			where TResponse : class, new()
 		{
-			return await MakeRequestAsync<T>(HttpMethod.DELETE, route, parameters);
+			return await MakeRequestAsync<TResponse, TRequest>(HttpMethod.DELETE, route, body, parameters);
 		}
 
-		private async Task<T> MakeRequestAsync<T>(HttpMethod method, string route, Dictionary<string, string> body = null, Dictionary<string, string> parameters = null)
+		private async Task<TResponse> MakeRequestAsync<TResponse, TRequest>(HttpMethod method, string route, TRequest body = null, Dictionary<string, string> parameters = null)
+			where TRequest : class, new()
+			where TResponse : class, new()
 		{
 			SortedDictionary<string, string> sortedParameters = parameters == null
 				? sortedParameters = new SortedDictionary<string, string>()
@@ -75,11 +87,11 @@ namespace SendGrid.Http
 				httpClient.DefaultRequestHeaders.Accept.Add(
 					new MediaTypeWithQualityHeaderValue(_jsonContentType));
 				httpClient.DefaultRequestHeaders.UserAgent.Add(
-					new ProductInfoHeaderValue("sendgrid_dotnet", "1.0.0-beta")); // TODO: make this reaaal
+					new ProductInfoHeaderValue("sendgrid-dotnet", "1.0.0-beta")); // TODO: make this reaaal
 				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Bearer {_apiKey}");
 
 				httpClient.BaseAddress = new Uri(_baseUrl);
-				var path = $"/api/{route}.json";
+				var path = $"/v{_version}/{route}";
 
 				// Add additional required parameters
 				sortedParameters.Add("timestamp", $"{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fff")}Z");
@@ -94,15 +106,15 @@ namespace SendGrid.Http
 						break;
 
 					case HttpMethod.POST:
-						response = await httpClient.PostAsync(path, new FormUrlEncodedContent(body));
+						response = await httpClient.PostAsync(path, new StringContent(SerializeObject(body), Encoding.UTF8, _jsonContentType));
 						break;
 
 					case HttpMethod.PUT:
-						response = await httpClient.PutAsync(path, new FormUrlEncodedContent(body));
+						response = await httpClient.PutAsync(path, new StringContent(SerializeObject(body), Encoding.UTF8, _jsonContentType));
 						break;
 
 					case HttpMethod.PATCH:
-						response = await httpClient.PatchAsync(path, new FormUrlEncodedContent(body));
+						response = await httpClient.PatchAsync(path, new StringContent(SerializeObject(body), Encoding.UTF8, _jsonContentType));
 						break;
 
 					case HttpMethod.DELETE:
@@ -118,7 +130,12 @@ namespace SendGrid.Http
 
 				// if the response was a success: deserialize the response and then return it.
 				if (response.IsSuccessStatusCode)
-					return JsonConvert.DeserializeObject<T>(responseContent);
+				{
+					if (String.IsNullOrWhiteSpace(responseContent))
+						return new TResponse();
+
+					return JsonConvert.DeserializeObject<TResponse>(responseContent);
+				}
 
 				// otherwise, deserialize it into an error response and throw it
 				var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(responseContent);

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using SendGrid.Models;
+using SendGrid.Models.Error;
 
 namespace SendGrid.Exceptions
 {
@@ -7,11 +10,11 @@ namespace SendGrid.Exceptions
 		: Exception
 	{
 		public SendGridApiException(ErrorResponse error)
-			: base(error.Message)
+			: base(error.Errors.First().Message)
 		{
 			Errors = error.Errors;
 		}
 
-		public string[] Errors { get; private set; }
+		public IEnumerable<ErrorDetail> Errors { get; private set; }
 	}
 }
