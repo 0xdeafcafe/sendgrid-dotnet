@@ -5,72 +5,37 @@ Little library for using SendGrid's v3 mail API with DotNet Core.
 
 #### Simple Usage Example
 ``` csharp
-var connection = new ApiKeyConnection("sendgrid api key");
-var client = new SendGridClient(connection);
-await client.MailClient.SendAsync("alex@github.com", "Alex Forbes-Reed", "Test Subject", "<h1>body</h1>", "body", "info@github.com", "Github Account");
-```
-
-#### Dependency Injection Example - thanks [@NotMyself](https://github.com/NotMyself)
-``` csharp
-public class ContactUsOptions
+var key = new ApiKeyConnection("SG.api.key");
+var client = new SendGridClient(key);
+client.MailClient.SendAsync(new Email
 {
-    public string ApiKey { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Subject { get; } = "Kiehl NW Website Contact Form Submission";
-}
-
-public class ContactUsService
-{
-    private readonly ContactUsOptions options;
-    private readonly ILogger<ContactUsService> logger;
-
-    public ContactUsService(IOptions<ContactUsOptions> accessor,
-        ILogger<ContactUsService> logger)
+    Personalizations = new List<Personalization>
     {
-        this.logger = logger;
-        this.options = accessor.Value;
-    }
-
-    public Task SendAsync(ContactViewModel vm)
-    {
-        logger?.LogInformation($"Sending Contact Us Message From {vm.Email}");
-
-        return GetClient()?.SendAsync(
-                 from: vm.Email
-                , fromName: vm.Name
-                , to: options.Email
-                , toName: options.Name
-                , subject: options.Subject
-                , htmlBody: vm.Message
-                , textBody: vm.Message);
-    }
-
-    private IMailClient GetClient()
-    {
-        if (string.IsNullOrWhiteSpace(options.ApiKey))
+        new Personalization
         {
-            logger?.LogError("API Key Not Found: Unable to create SendGrid Client");
-            return null;
+            To = new List<EmailDetail>
+            {
+                new EmailDetail
+                {
+                    Email = "customer@yahoooooo.com",
+                    Name = "Customer Name"
+                }
+            }
         }
-
-        var key = new ApiKeyConnection(options.ApiKey);
-        var client = new SendGridClient(key);
-        return client.MailClient;
-    }
-}
-
-public void ConfigureServices(IServiceCollection services)
-{
-    services.Configure<ContactUsOptions>(o =>
+    },
+    From = new EmailDetail
     {
-        o.ApiKey = Configuration["SENDGRID_API_KEY"];
-        o.Name = Configuration["ContactUs:Name"];
-        o.Email = Configuration["ContactUs:Email"];
-    });
-
-    services.AddScoped<ContactUsService>();
-
-    services.AddMvc();
-}
+        Email = "no-reply@company.domain",
+        Name = "Company Letter"
+    },
+    Subject = "sup",
+    Content = new List<Content>
+    {
+        new Content
+        {
+            Type = "text/html",
+            Value = "<h1>yo yo! :)</h1>"
+        }
+    }
+}).Wait();
 ```
