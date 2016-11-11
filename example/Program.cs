@@ -9,7 +9,7 @@ namespace ConsoleApplication
 	{
 		public static void Main(string[] args)
 		{
-			var key = new ApiKeyConnection("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");
+			var key = new ApiKeyConnection("SG.api.key");
 			var client = new SendGridClient(key);
 			client.MailClient.SendAsync(new Email
 			{
