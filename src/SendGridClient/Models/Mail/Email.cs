@@ -26,6 +26,9 @@ namespace SendGrid.Models.Mail
 		[JsonProperty("template_id", NullValueHandling = Ignore)]
 		public string TemplateId { get; set; } = null;
 
+		[JsonProperty("headers", NullValueHandling = Ignore)]
+		public Dictionary<string, string> Headers { get; set; } = null;
+
 		[JsonProperty("categories", NullValueHandling = Ignore)]
 		public IEnumerable<string> Categories { get; set; } = null;
 
