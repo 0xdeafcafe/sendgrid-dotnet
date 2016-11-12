@@ -23,6 +23,9 @@ namespace SendGrid.Models.Mail
 		[JsonProperty("headers", NullValueHandling = Ignore)]
 		public Dictionary<string, string> Headers { get; set; } = null;
 
+		[JsonProperty("substitutions", NullValueHandling = Ignore)]
+		public Dictionary<string, string> Substitutions { get; set; } = null;
+
 		[JsonProperty("send_at", NullValueHandling = Ignore)]
 		[JsonConverter(typeof(JavaScriptDateTimeConverter))]
 		public Nullable<DateTime> SendAt { get; set; } = null;
