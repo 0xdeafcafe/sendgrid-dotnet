@@ -16,7 +16,7 @@
 			"swag"
 		],
 		"projectUrl": "https://github.com/0xdeafcafe/sendgrid-dotnet",
-		"licenseUrl": "https://github.com/0xdeafcafe/sendgrid-dotnet/blob/master/LICENSE",
+		"licenseUrl": "https://github.com/0xdeafcafe/sendgrid-dotnet/blob/master/LICENSE.md",
 		"iconUrl": "https://assets2.sendgrid.com/mkt/assets/logos_brands/2016/2015_SG_2nd_Small_RGB-99fe0e48b8ef11f8524bfd6b5ef67ee6.png",
 		"repository": {
 			"type": "git",
