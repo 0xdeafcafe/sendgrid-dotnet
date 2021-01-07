@@ -1,6 +1,8 @@
 sendgrid-dotnet
 ===
 
+**This repo isn't maintained anymore, please use the official SendGrid SDK [here](https://github.com/sendgrid/sendgrid-csharp)**!
+
 Little library for using SendGrid's v3 mail API with DotNet Core.
 
 #### Simple Usage Example
